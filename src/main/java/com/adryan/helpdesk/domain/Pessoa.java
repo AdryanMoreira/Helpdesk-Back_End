@@ -20,7 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public abstract class Pessoa implements Serializable{
+public abstract class Pessoa implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id

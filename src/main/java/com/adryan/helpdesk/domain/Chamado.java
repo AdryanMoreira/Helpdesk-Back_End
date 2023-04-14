@@ -1,5 +1,6 @@
 package com.adryan.helpdesk.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Chamado {
+public class Chamado implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
