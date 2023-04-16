@@ -10,13 +10,19 @@ import com.adryan.helpdesk.domain.Tecnico;
 import com.adryan.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.NotNull;
+
 public class TecnicoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 		protected Integer id;
+		@NotNull(message = "O campo NOME é requerido")
 		protected String nome;
+		@NotNull(message = "O campo CPF é requerido")
 		protected String cpf;
+		@NotNull(message = "O campo EMAIL é requerido")
 		protected String email;
+		@NotNull(message = "O campo SENHA é requerida")
 		protected String senha;
 		protected Set<Integer> perfis = new HashSet<>();
 		
@@ -25,6 +31,7 @@ public class TecnicoDTO implements Serializable {
 
 		public TecnicoDTO() {
 			super();
+			addPerfil(Perfil.CLIENTE); 
 		}
 
 		public TecnicoDTO(Tecnico obj) {
@@ -36,6 +43,7 @@ public class TecnicoDTO implements Serializable {
 			this.senha = obj.getSenha();
 			this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
 			this.datacriacao = obj.getDatacriacao();
+			addPerfil(Perfil.CLIENTE);
 		}
 
 		public Integer getId() {
@@ -82,7 +90,7 @@ public class TecnicoDTO implements Serializable {
 			return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 		}
 
-		public void addPerfis(Perfil perfil) {
+		public void addPerfil(Perfil perfil) {
 			this.perfis.add(perfil.getCodigo());
 		}
 
