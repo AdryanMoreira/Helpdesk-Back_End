@@ -21,7 +21,6 @@ public class JWTUtil {
 	public String generateToken(String email) {
 		String token = Jwts.builder().setSubject(email).setExpiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
-		
 		return token;
 	}
 

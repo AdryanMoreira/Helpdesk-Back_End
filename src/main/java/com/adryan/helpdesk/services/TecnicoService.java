@@ -25,6 +25,7 @@ public class TecnicoService {
 	
 	@Autowired 
 	private PessoaRepository pessoaRepository;
+	
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
