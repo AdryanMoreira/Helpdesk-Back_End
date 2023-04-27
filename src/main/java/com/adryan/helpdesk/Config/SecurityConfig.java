@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,6 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.adryan.helpdesk.security.JWTAuthenticationFilter;
+import com.adryan.helpdesk.security.JWTAuthorizationFilter;
 import com.adryan.helpdesk.security.JWTUtil;
 import com.adryan.helpdesk.services.UserDetailsServiceImpl;
 
@@ -39,6 +41,9 @@ public class SecurityConfig {
 	@Autowired
 	private JWTUtil jwtUtil;
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http, AuthenticationConfiguration authConfiguration) throws Exception {
 		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
@@ -46,11 +51,13 @@ public class SecurityConfig {
 		}
 		
 		http.addFilter(new JWTAuthenticationFilter(authConfiguration.getAuthenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authConfiguration.getAuthenticationManager(), jwtUtil, userDetailsService));
 		http
 		.cors().and().csrf().disable()
 		
 		.authorizeHttpRequests(auth -> auth
                 .requestMatchers(AntPathRequestMatcher.antMatcher(PUBLIC_MATCHERS1)).permitAll()
+                .anyRequest().authenticated().and()
         )
         .headers(headers -> headers.frameOptions().disable())
         .csrf(csrf -> csrf
