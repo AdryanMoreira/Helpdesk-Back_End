@@ -11,27 +11,29 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-
+	
 	@Value("${jwt.expiration}")
 	private Long expiration;
-
+	
 	@Value("${jwt.secret}")
 	private String secret;
-
+	
 	public String generateToken(String email) {
-		String token = Jwts.builder().setSubject(email).setExpiration(new Date(System.currentTimeMillis() + expiration))
-				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
-		return token;
+		return Jwts.builder()
+				.setSubject(email)
+				.setExpiration(new Date(System.currentTimeMillis() + expiration))
+				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
+				.compact();
 	}
 
 	public boolean tokenValido(String token) {
 		Claims claims = getClaims(token);
-		if (claims != null) {
+		if(claims != null) {
 			String username = claims.getSubject();
-			Date expiDate = claims.getExpiration();
+			Date expirationDate = claims.getExpiration();
 			Date now = new Date(System.currentTimeMillis());
-
-			if (username != null && expiDate != null && now.before(expiDate)) {
+			
+			if(username != null && expirationDate != null && now.before(expirationDate)) {
 				return true;
 			}
 		}
@@ -46,12 +48,12 @@ public class JWTUtil {
 		}
 	}
 
-	public String getUsername(String token) {
+	public String getUsename(String token) {
 		Claims claims = getClaims(token);
-		if (claims != null) {
+		if(claims != null) {
 			return claims.getSubject();
-		} else {
-			return null;
 		}
+		return null;
 	}
+	
 }

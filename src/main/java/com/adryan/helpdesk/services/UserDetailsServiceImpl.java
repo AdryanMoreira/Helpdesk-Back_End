@@ -14,7 +14,7 @@ import com.adryan.helpdesk.security.UserSS;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
-
+	
 	@Autowired
 	private PessoaRepository repository;
 

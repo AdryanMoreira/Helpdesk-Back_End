@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +22,6 @@ import com.adryan.helpdesk.domain.Cliente;
 import com.adryan.helpdesk.domain.dtos.ClienteDTO;
 import com.adryan.helpdesk.services.ClienteService;
 
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/clientes")
